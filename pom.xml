@@ -43,18 +43,14 @@
 
     <build>
 
-        <resources>
-            <!-- Основные ресурсы проекта (src/main/resources) -->
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
 
+        <resources>
             <!-- Включаем JAR-зависимости из target/lib/ в финальный JAR -->
             <resource>
                 <directory>${project.build.directory}/lib</directory>
-                <targetPath>lib/</targetPath>  <!-- Папка внутри JAR -->
+                <targetPath>lib/</targetPath>   <!--  Папка внутри JAR -->
                 <includes>
-                    <include>*.jar</include>  <!-- Только JAR-файлы -->
+                    <include>*.jar</include>  <!--  Только JAR-файлы -->
                 </includes>
             </resource>
         </resources>
@@ -89,7 +85,7 @@
                     <artifactId>desktop-game-engine</artifactId>
                     <version>1.0</version>
                     <packaging>jar</packaging>
-                    <file>${basedir}/lib/desktop-game-engine.jar</file>
+                    <file>lib/desktop-game-engine-1.0.jar</file>
                     <generatePom>true</generatePom>
                 </configuration>
                 <executions>
@@ -107,10 +103,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    <excludeTransitive>false</excludeTransitive>
+                    <stripVersion>false</stripVersion>
+                </configuration>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
+                        <phase>validate</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -135,6 +136,7 @@
                         </manifest>
                         <manifestEntries>
                             <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                            <Class-Path>./</Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
